@@ -30,19 +30,14 @@
 __vector_reset:
 	msr cpsr_c,#(DISABLE_IRQ|DISABLE_FIQ|SVC_MOD)
 	ldr sp,=_SVC_STACK
-
 	msr cpsr_c,#(DISABLE_IRQ|DISABLE_FIQ|IRQ_MOD)
 	ldr sp,=_IRQ_STACK
-
 	msr cpsr_c,#(DISABLE_IRQ|DISABLE_FIQ|FIQ_MOD)
 	ldr sp,=_FIQ_STACK
-
 	msr cpsr_c,#(DISABLE_IRQ|DISABLE_FIQ|ABT_MOD)
 	ldr sp,=_ABT_STACK
-
 	msr cpsr_c,#(DISABLE_IRQ|DISABLE_FIQ|UND_MOD)
 	ldr sp,=_UND_STACK
-
 	msr cpsr_c,#(DISABLE_IRQ|DISABLE_FIQ|SYS_MOD)
 	ldr sp,=_SYS_STACK
 
@@ -60,7 +55,7 @@ _main:
 	b plat_boot
 
 
-_bss_start_:.word  __bss_start__
-_bss_end_:.word  __bss_end__
+_bss_start_:	.word  __bss_start__
+_bss_end_:		.word  __bss_end__
 
 .end

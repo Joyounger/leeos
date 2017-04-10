@@ -16,7 +16,6 @@
 .extern __vector_fiq
 
 _start:
-
 	ldr pc,_vector_reset
 	ldr pc,_vector_undefined
 	ldr pc,_vector_swi
@@ -28,11 +27,11 @@ _start:
 
 	.align 4
 
-_vector_reset:	.word  __vector_reset
-_vector_undefined:	.word  __vector_undefined
-_vector_swi:	.word  __vector_swi
+_vector_reset:			.word  __vector_reset
+_vector_undefined:		.word  __vector_undefined
+_vector_swi:			.word  __vector_swi
 _vector_prefetch_abort:	.word  __vector_prefetch_abort
-_vector_data_abort:	.word  __vector_data_abort
-_vector_reserved:	.word  __vector_reserved
-_vector_irq:	.word  __vector_irq
-_vector_fiq:	.word  __vector_fiq
+_vector_data_abort:		.word  __vector_data_abort
+_vector_reserved:		.word  __vector_reserved
+_vector_irq:			.word  __vector_irq
+_vector_fiq:			.word  __vector_fiq
