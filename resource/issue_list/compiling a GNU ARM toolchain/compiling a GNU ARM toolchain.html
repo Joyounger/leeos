@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+  
+
+  
+
+
+  <head>
+    <title>
+      GnuArmToolchain – OsmocomBB
+    </title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!--[if IE]><script type="text/javascript">
+      if (/^#__msie303:/.test(window.location.hash))
+        window.location.replace(window.location.hash.replace(/^#__msie303:/, '#'));
+    </script><![endif]-->
+        <link rel="search" href="/trac/search" />
+        <link rel="help" href="/trac/wiki/TracGuide" />
+        <link rel="alternate" href="/trac/wiki/GnuArmToolchain?format=txt" type="text/x-trac-wiki" title="Plain Text" />
+        <link rel="start" href="/trac/wiki" />
+        <link rel="stylesheet" href="/trac/chrome/common/css/trac.css" type="text/css" /><link rel="stylesheet" href="/trac/chrome/common/css/wiki.css" type="text/css" />
+        <link rel="shortcut icon" href="/trac/chrome/common/trac.ico" type="image/x-icon" />
+        <link rel="icon" href="/trac/chrome/common/trac.ico" type="image/x-icon" />
+      <link type="application/opensearchdescription+xml" rel="search" href="/trac/search/opensearch" title="Search OsmocomBB" />
+      <script type="text/javascript" charset="utf-8" src="/trac/chrome/common/js/jquery.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/trac/chrome/common/js/babel.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/trac/chrome/common/js/messages/en_US.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/trac/chrome/common/js/trac.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/trac/chrome/common/js/search.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/trac/chrome/common/js/folding.js"></script>
+    <script type="text/javascript">
+      jQuery(document).ready(function($) {
+        $("#content").find("h1,h2,h3,h4,h5,h6").addAnchor(_("Link to this section"));
+        $("#content").find(".wikianchor").each(function() {
+          $(this).addAnchor(babel.format(_("Link to #%(id)s"), {id: $(this).attr('id')}));
+        });
+        $(".foldable").enableFolding(true, true);
+      });
+    </script>
+    <link rel="stylesheet" type="text/css" href="http://osmocom.org/osmocom/style.css" />
+  </head>
+  <body>
+    <div id="siteheader">
+      <div class="linkbar">
+      Osmocom{<a href="http://bb.osmocom.org/">BB</a>|<a href="http://openbsc.osmocom.org/">OpenBSC</a>|<a href="http://dect.osmocom.org/">DECT</a>|<a href="http://tetra.osmocom.org/">TETRA</a>|<a href="http://simtrace.osmocom.org/">SIMTRACE</a>|<a href="http://security.osmocom.org/">SECURITY</a>|<a href="http://gmr.osmocom.org/">GMR</a>|<a href="http://sdr.osmocom.org/">SDR</a>|<a href="http://op25.osmocom.org/">OP25</a>|<a href="http://planet.osmocom.org/">planet</a>|<a href="http://lists.osmocom.org/">lists</a>}
+      </div>
+    </div>
+    <div id="banner">
+      <div id="header">
+        <a id="logo" href="http://bb.osmocom.org/"><img src="/osmocom/osmocombb.png" alt="OsmocomBB" /></a>
+      </div>
+      <form id="search" action="/trac/search" method="get">
+        <div>
+          <label for="proj-search">Search:</label>
+          <input type="text" id="proj-search" name="q" size="18" value="" />
+          <input type="submit" value="Search" />
+        </div>
+      </form>
+      <div id="metanav" class="nav">
+    <ul>
+      <li class="first"><a href="/trac/login">Login</a></li><li><a href="/trac/wiki/Contact">Contact/Impressum</a></li><li class="last"><a href="/trac/prefs">Preferences</a></li>
+    </ul>
+  </div>
+    </div>
+    <div id="mainnav" class="nav">
+    <ul>
+      <li class="first active"><a href="/trac/wiki">Wiki</a></li><li><a href="/trac/timeline">Timeline</a></li><li><a href="/trac/query">View Tickets</a></li><li><a href="/trac/search">Search</a></li><li class="last"><a href="/trac/blog">Blog</a></li>
+    </ul>
+  </div>
+    <div id="main">
+      <div id="pagepath" class="noprint">
+  <a class="pathentry first" title="View WikiStart" href="/trac/wiki">wiki:</a><a class="pathentry" href="/trac/wiki/GnuArmToolchain" title="View GnuArmToolchain">GnuArmToolchain</a>
+</div>
+      <div id="ctxtnav" class="nav">
+        <h2>Context Navigation</h2>
+        <ul>
+          <li class="first"><a href="/trac/wiki/WikiStart">Start Page</a></li><li><a href="/trac/wiki/TitleIndex">Index</a></li><li class="last"><a href="/trac/wiki/GnuArmToolchain?action=history">History</a></li>
+        </ul>
+        <hr />
+      </div>
+    <div id="content" class="wiki">
+      <div class="wikipage searchable">
+        
+          <div id="wikipage" class="trac-content"><h2 id="GNUARMtoolchain">GNU ARM toolchain</h2>
+<p>
+This page will describe the procedure for compiling a GNU ARM toolchain.
+We will build a toolchain consisting of:
+</p>
+<ul><li>GCC 4.8.2
+</li><li>Binutils 2.21.1
+</li><li>Newlib 1.19
+</li></ul><h3 id="Gettingthebuildscript">Getting the buildscript</h3>
+<p>
+First of all, create a directory you want to use for building the toolchain, and download the buildscript <a class="attachment" href="/trac/raw-attachment/wiki/GnuArmToolchain/gnu-arm-build.3.sh" title="Attachment 'gnu-arm-build.3.sh' in GnuArmToolchain">gnu-arm-build.3.sh</a> there.
+You will need to make it executable:
+</p>
+<pre class="wiki">$ chmod +x gnu-arm-build.3.sh
+</pre><h3 id="Dependencies">Dependencies</h3>
+<p>
+In order to build the toolchain, you will need to install the following packages (assuming you're using a Debian-based distribution):
+</p>
+<pre class="wiki">$ sudo apt-get install build-essential libgmp3-dev libmpfr-dev libx11-6 libx11-dev texinfo flex bison libncurses5 \
+  libncurses5-dbg libncurses5-dev libncursesw5 libncursesw5-dbg libncursesw5-dev zlibc zlib1g-dev libmpfr4 libmpc-dev
+</pre><h3 id="Preparation">Preparation</h3>
+<p>
+Open a shell in the directory of gnu-arm-build.sh and create the following directories:
+</p>
+<pre class="wiki">$ mkdir build install src
+</pre><p>
+Download the needed sources to src/:
+</p>
+<pre class="wiki">$ cd src/
+$ wget http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2
+$ wget http://ftp.gnu.org/gnu/binutils/binutils-2.21.1a.tar.bz2
+$ wget ftp://sources.redhat.com/pub/newlib/newlib-1.19.0.tar.gz
+</pre><h3 id="Buildingthetoolchain">Building the toolchain</h3>
+<pre class="wiki">$ cd ..
+$ ./gnu-arm-build.3.sh 
+I will build an arm-none-eabi cross-compiler:
+
+  Prefix: &lt;YOURPATH&gt;/install
+  Sources: &lt;YOURPATH&gt;/src
+  Build files: &lt;YOURPATH&gt;/build
+
+Press ^C now if you do NOT want to do this.
+</pre><p>
+Hit enter and after some time hopefully end up with:
+</p>
+<pre class="wiki">Build complete! Add &lt;YOURPATH&gt;/bin to your PATH to make arm-none-eabi-gcc and friends
+accessible directly.
+</pre><h3 id="Makingitaccessible">Making it accessible</h3>
+<p>
+If you're using bash, you can add the following in your ~/.bashrc file:
+</p>
+<pre class="wiki">export PATH=$PATH:&lt;YOURPATH&gt;/install/bin
+</pre><p>
+That's it. You can <a class="wiki" href="/trac/wiki/GettingStarted#Gettingandupdatingthesource">build</a> OsmocomBB now.
+</p>
+<p>
+<strong>Credits:</strong>
+</p>
+<p>
+This script is a slightly updated/modified version of the script found <a class="ext-link" href="http://hobbycode.googlecode.com/svn/trunk/gnu-arm-installer/"><span class="icon">​</span>here</a>. <br />
+The original version also builds Insight, but since we don't need that, we won't build it. If you want to, just remove the comments in the shellscript.
+</p>
+</div>
+          
+          <div class="trac-modifiedby">
+            <span><a href="/trac/wiki/GnuArmToolchain?action=diff&amp;version=12" title="Version 12 by ahuemer: gnu-arm-build.2.sh -&gt; gnu-arm-build.3.sh">Last modified</a> <a class="timeline" href="/trac/timeline?from=2015-06-17T19%3A15%3A57Z&amp;precision=second" title="See timeline at Jun 17, 2015, 7:15:57 PM">8 months ago</a></span>
+            <span class="trac-print">Last modified on Jun 17, 2015, 7:15:57 PM</span>
+          </div>
+        
+        
+      </div>
+      
+    <div id="attachments">
+        <h3 class="foldable">Attachments <span class="trac-count">(3)</span></h3>
+        <div>
+          <ul>
+              <li>
+    <a href="/trac/attachment/wiki/GnuArmToolchain/gnu-arm-build.sh" title="View attachment">gnu-arm-build.sh</a><a href="/trac/raw-attachment/wiki/GnuArmToolchain/gnu-arm-build.sh" class="trac-rawlink" title="Download">​</a>
+       (<span title="3302 bytes">3.2 KB</span>) -
+      added by <em>steve-m</em> <a class="timeline" href="/trac/timeline?from=2011-01-02T16%3A47%3A22Z&amp;precision=second" title="See timeline at Jan 2, 2011, 4:47:22 PM">5 years ago</a>.
+                <q>The GNU ARM toolchain buildscript</q>
+              </li>
+              <li>
+    <a href="/trac/attachment/wiki/GnuArmToolchain/gnu-arm-build.2.sh" title="View attachment">gnu-arm-build.2.sh</a><a href="/trac/raw-attachment/wiki/GnuArmToolchain/gnu-arm-build.2.sh" class="trac-rawlink" title="Download">​</a>
+       (<span title="3307 bytes">3.2 KB</span>) -
+      added by <em>blombo</em> <a class="timeline" href="/trac/timeline?from=2011-09-07T11%3A32%3A31Z&amp;precision=second" title="See timeline at Sep 7, 2011, 11:32:31 AM">4 years ago</a>.
+              </li>
+              <li>
+    <a href="/trac/attachment/wiki/GnuArmToolchain/gnu-arm-build.3.sh" title="View attachment">gnu-arm-build.3.sh</a><a href="/trac/raw-attachment/wiki/GnuArmToolchain/gnu-arm-build.3.sh" class="trac-rawlink" title="Download">​</a>
+       (<span title="3393 bytes">3.3 KB</span>) -
+      added by <em>ahuemer</em> <a class="timeline" href="/trac/timeline?from=2015-06-17T19%3A11%3A08Z&amp;precision=second" title="See timeline at Jun 17, 2015, 7:11:08 PM">8 months ago</a>.
+              </li>
+          </ul>
+          <p>
+            Download all attachments as: <a rel="nofollow" href="/trac/zip-attachment/wiki/GnuArmToolchain/">.zip</a>
+          </p>
+        </div>
+    </div>
+
+    </div>
+    <div id="altlinks">
+      <h3>Download in other formats:</h3>
+      <ul>
+        <li class="last first">
+          <a rel="nofollow" href="/trac/wiki/GnuArmToolchain?format=txt">Plain Text</a>
+        </li>
+      </ul>
+    </div>
+    </div>
+    <div id="footer" lang="en" xml:lang="en"><hr />
+      <a id="tracpowered" href="http://trac.edgewall.org/"><img src="/trac/chrome/common/trac_logo_mini.png" height="30" width="107" alt="Trac Powered" /></a>
+      <p class="left">Powered by <a href="/trac/about"><strong>Trac 1.0.1</strong></a><br />
+        By <a href="http://www.edgewall.org/">Edgewall Software</a>.</p>
+      <p class="right">Visit the Trac open source project at<br /><a href="http://trac.edgewall.org/">http://trac.edgewall.org/</a></p>
+    </div>
+    <div id="sitefooter">
+	<center>
+	<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a>
+	</center>
+    </div>
+  </body>
+</html>

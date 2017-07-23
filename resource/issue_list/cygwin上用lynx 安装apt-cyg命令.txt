@@ -1,0 +1,38 @@
+cygwin 安装apt-cyg命令
+googlecode关闭了。没法用wget安装apt-cyg
+找了半天只有github里有个方法可行：
+lynx -source rawgit.com/transcode-open/apt-cyg/master/apt-cyg > apt-cyg
+install apt-cyg /bin
+
+
+
+
+设置下载站点和缓存目录
+apt-cyg -c /cygdrive/d/downloads/cygwin -m http://mirrors.163.com/cygwin/ find php
+也可以把默认的缓存和下载站点存到文件中，编辑apt-cyg，找到68行：
+#mirror=ftp://mirror.mcs.anl.gov/pub/cygwin
+#cache=/setup
+mirror=http://mirrors.163.com/cygwin
+cache=/cygdrive/d/downloads/cygwin
+
+
+首先安装cygwin程序，官网上下载即可。过程中安装 
+wget 
+tar 
+gawk 
+bzip2
+
+cygwin安装时别忘记安装curl，wget，iconv，lynx，dos2unix，Python等常用工具，特别是Python。
+
+
+安装cyg-apt 
+-# install apt-cyg 
+lynx -source rawgit.com/transcode-open/apt-cyg/master/apt-cyg > apt-cyg 
+-#install 
+install apt-cyg /bin 
+-#link source 
+apt-cyg -m http://mirrors.163.com/cygwin/ 
+-#update 
+apt-cyg update 
+-#Example use of apt-cyg: 
+apt-cyg install nano

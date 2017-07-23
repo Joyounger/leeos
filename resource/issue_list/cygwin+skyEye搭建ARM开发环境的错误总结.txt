@@ -1,0 +1,32 @@
+cygwin+skyEye搭建ARM开发环境的错误总结
+2012-07-01 16:22 by 梁晓, 848 阅读, 0 评论, 收藏, 编辑
+1.在window系统上安装cygwin环境，以及交叉环境的配置可以参考博文 
+    	 http://hi.baidu.com/lovingjava/blog/item/85091aee5a2bdaf8cf1b3e7a.html
+
+    在这里要注意的是将使用到交叉工具的目录添加到环境变量中，并要设置它的的权限，按照《《一步步写嵌入式操作系统》环境配置》进行配置时，会出现了
+
+      http://blog.csdn.net/abclixu123/article/details/7060463 提到的问题，主要是汇编器的权限问题使用
+       chmod 777 /usr/leeos_tools_for_Cygwin/arm-elf/bin -R 将arm-elf/bin  目录下的所有文件的权限都更改
+
+      这时可以利用arm-elf-gcc 产生目标elf文件
+
+2. 在skyEye拷贝到对应的目录下后（该目录路径在环境变量中），按照《一步步写嵌入式操作系统》编写skyeye.conf配置文件，然后就可以启动模拟器进行模拟，有两种方式
+
+     （1）按照《一步步写嵌入式操作系统》需要将elf文件的代码段.text 、 数据段.data 以及未初始化的数据段 .bss 提取出来后，组织成bin文件，然后直接在elf的目下输入skyeye命令，这我没有尝试，不知道有没有错。
+
+1 $(OBJCOPY) -O  binary  -j .text test.elf test.text
+2 $(OBJCOPY) -O  binary  -j .data test.elf test.data
+3 $(OBJCOPY) -O  binary  -j .bss  test.elf test.bss
+4 cat test.text test.data test.bss > test.bin
+     （2） 不需要预先加载程序，直接利用skyeye -e test.elf 命令启动模拟器进行模拟，会出现博文
+
+        http://hi.baidu.com/andtemple/blog/item/d86fa462878beac580cb4a51.html 提到的错误，主要是内存分配的堆栈问题，
+
+	mem_bank: map=M, type=RW, addr=0x00000000, size=0x00800000,
+
+        这只为程序.test 、.data和. bss部分为开一块内存，还需要为程序运行时的堆栈开辟内存，如下 
+
+
+	mem_bank: map=M, type=RW, addr=0xfff00000, size=0x000fffff    有1M的空间 
+
+   附：程序的内存映射：

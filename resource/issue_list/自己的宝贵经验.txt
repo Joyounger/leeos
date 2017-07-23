@@ -1,0 +1,26 @@
+交叉编译工具要用  yagarto的
+51CTO下载-GNU ARM 工具链-2.21_gcc-4.6.2-c-c++_nl-1.19.0_gdb-7.3.1_eabi_20111119  ！！！！！！！！
+
+
+不能用
+（gcc 4.0.0编译汇编不支持.arch伪指令）arm windows的交叉编译工具 安装后再cygwin中使用bu-2.15_gcc-4.0.0-c-c++_nl-1.13.0_gi-6.1.exe
+因为其版本4.0.0 过久
+
+
+因此要将作者提供的makefile中的
+CC=arm-elf-gcc
+
+LD=arm-elf-ld
+
+OBJCOPY=arm-elf-objcopy
+改为：
+CC=arm-none-eabi-gcc
+LD=arm-none-eabi-ld
+OBJCOPY=arm-none-eabi-objcopy
+
+linux profile文件
+PATH=$PATH:/yagarto/arm-none-eabi/bin
+
+PATH=$PATH:/yagarto/bin
+
+PATH=$PATH:/yagarto/libexec/gcc/arm-none-eabi/4.6.2

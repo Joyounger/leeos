@@ -1,0 +1,524 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>HOWTO Create an MSYS Build Environment | MinGW</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link type="text/css" rel="stylesheet" media="all" href="/sites/www.mingw.org/files/css/css_2deaf38323199c5680df500d2888255f.css" />
+    <script type="text/javascript"> </script>
+  </head>
+
+<body id="second">
+  <div id="page" class="one-sidebar two-sidebars">
+  
+    <div id="header">
+    
+      <div id="logo-title">
+       
+                
+                  <h1 id='site-name'>
+            <a href="/" title="Home">
+              MinGW            </a>
+          </h1>
+                
+         
+          <div id='site-slogan'>
+            Minimalist GNU for Windows          </div>
+                
+      </div>
+      
+      <div class="menu withprimarywithsecondary">
+                      <div id="primary" class="clear-block">
+              <ul class="links primary-links"><li class="menu-43 first"><a href="/Welcome_to_MinGW_org" title="About MinGW">About</a></li>
+<li class="menu-92"><a href="https://sourceforge.net/downloads/mingw" title="">Downloads</a></li>
+<li class="menu-66"><a href="/wiki" title="MinGW&#039;s New Wiki">Documentation</a></li>
+<li class="menu-63"><a href="/tracker">Recent posts</a></li>
+<li class="menu-48 last"><a href="/aggregator">Feed aggregator</a></li>
+</ul>            </div>
+                    
+                      <div id="secondary" class="clear-block">
+                      </div>
+                </div>
+      
+            
+    </div>
+
+    <div id="container" class="withleft withright clear-block">
+      
+      <div id="main-wrapper">
+      <div id="main" class="clear-block">
+        <div class="breadcrumb"><a href="/">Home</a></div>                        <h1 class="title">HOWTO Create an MSYS Build Environment</h1>        <div class="tabs"><ul class="tabs primary">
+<li class="active" ><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment" class="active">View</a></li>
+<li ><a href="/node/43/revisions">Revisions</a></li>
+</ul>
+</div>                        <div class="node" id="node-43">
+  
+    
+  
+    <div class="meta with-taxonomy">
+  
+          <div class="submitted">Posted August 17th, 2008 by mingw_msys_dan</div> 
+        
+     
+      <div class="taxonomy"><ul class="links inline"><li class="taxonomy_term_15 first"><a href="/category/wiki/mingw" rel="tag" title="">mingw</a></li>
+<li class="taxonomy_term_13"><a href="/category/wiki/msys" rel="tag" title="">msys</a></li>
+<li class="taxonomy_term_32 last"><a href="/category/wiki/msys_build_environment" rel="tag" title="">msys build environment</a></li>
+</ul></div>
+        
+  </div>
+    
+  <div class="content">
+    <p><strong>Important Note</strong>: The build environment described here is used for development of the <a class="" style="" href="/wiki/MSYS">MSYS</a> product itself; it is <strong>not</strong> applicable for users who simply wish to <strong>use</strong> MSYS, as a working environment for developing normal MS-Windows applications, (presumably using <a class="" style="" href="/wiki/MinGW">MinGW</a> as the compiler suite).  The overwhelming majority of MSYS users <strong>do not</strong> need to set up any such &quot;MSYS Build Environment&quot;.</p>
+<p>The MSYS build environment is one whose GNU canonical system name (like returned by &quot;<tt>uname -s</tt>&quot;) will have MSYS_ as the beginning portion of the string.  The MSYS build environment is used to build the tools distributed by MSYS.  The binaries it creates are dependent on the msys-1.0.dll runtime, which provides thin POSIX layer.</p>
+<p>The easiest way to make sure all necessary packages are installed is to let mingw-get do the job:</p>
+<pre>mingw-get install msys-dvlpr</pre><p>
+By default, MSYS gets installed into <tt>&lt;MinGW_root&gt;\msys\1.0</tt> and can be entered executing &quot;<tt>msys.bat MSYS</tt>&quot; from there. That will open new window with MSYS in its title and different color scheme if rxvt is used.  In MSYS environment <tt>$PATH</tt> is set so <tt>/bin</tt> preceedes <tt>/mingw/bin</tt>, therefore msys-gcc becomes default compiler (gcc -v should state &quot;msys special&quot;).</p>
+<p>On the contrary in MinGW environment (entered executing &quot;<tt>msys.bat</tt>&quot; without parameter) <tt>/mingw/bin</tt> path preceedes <tt>/bin</tt>, therefore mingw32-gcc is found first, thus gcc -v states &quot;GCC&quot;).</p>
+<p>To help identify the runtime build and the the current working directory, following can be added to <tt>~/.profile</tt> file.</p>
+<pre># Determine windows path
+W=`pwd -W`
+
+# Determine identifying version info
+V=`echo -n \`uname -r | cut -d \( -f 1\`-\`uname -v | sed -e 's/ /@/'\``
+
+# Reset bash prompt
+export PS1='\[\033]0;$MSYSTEM-$V($W):\w\007
+\033[47m\033[30m\]\u@\h \[\033[47m\033[35m\w\033[0m\]
+$ '</pre><p>
+Similar profile commands can be established on remote systems to help identify the remote window in the task bar.</p>
+<p>See also the following for more hints and suggestions:</p>
+<p>[FIXME: these references all point to the old, now-deprecated MinGWiki; the original pages need to be migrated].</p>
+<p><a href="http://oldwiki.mingw.org/index.php/Build%20bash">http://oldwiki.mingw.org/index.php/Build%20bash</a></p>
+<p><a href="http://oldwiki.mingw.org/index.php/FullTextSearch?s=sgtty.h%3A+No+such+file+or+directory">http://oldwiki.mingw.org/index.php/FullTextSearch?s=sgtty.h%3A+No+such+file+or+directory</a></p>
+<p><a href="http://oldwiki.mingw.org/index.php/MSYSBuildEnvironment">http://oldwiki.mingw.org/index.php/MSYSBuildEnvironment</a></p>
+<p><a href="http://oldwiki.mingw.org/index.php/Build%20MSYS">http://oldwiki.mingw.org/index.php/Build%20MSYS</a></p>
+<p><a href="http://oldwiki.mingw.org/index.php/bug-termios_h">http://oldwiki.mingw.org/index.php/bug-termios_h</a></p>
+<p>MinGW/MSYS Source Forge home page:</p>
+<p><a href="http://sourceforge.net/project/showfiles.php?group_id=2435">http://sourceforge.net/project/showfiles.php?group_id=2435</a></p>
+  </div>
+  
+      <div class="links">
+      <ul class="links inline"><li class="comment_forbidden first"></li>
+<li class="statistics_counter"><span>143493 reads</span></li>
+<li class="print_html last"><a href="/print/wiki/HOWTO_Create_an_MSYS_Build_Environment" title="Display a printer-friendly version of this page." class="print-page" onclick="window.open(this.href); return false" rel="nofollow"><img src="/sites/mingw.org/modules/print/icons/print_icon.gif" alt="Printer-friendly version" title="Printer-friendly version" width="16" height="16" class="print-icon" /></a></li>
+</ul>    </div>
+    
+</div>
+<div id="comments">
+  <a id="comment-182"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-182" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  </div>
+    <div class="submitted">On February 5th, 2009 dykshoorn says:</div>
+    <div class="content"><p>You may want to consider setting up Security on your wiki as on Feb 2 &quot;wow_account&quot; revised your article with spam.</p>
+<p>I reverted it back to your previous post which I find much more valuable than how to get &quot;cheap wow accounts&quot;  :-)</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+<div class="indented"><a id="comment-183"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-183" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  <img src="http://www.mingw.org/sites/www.mingw.org/files/pictures/picture-7.png" alt="keith&#039;s picture" title="keith&#039;s picture"  /></div>
+    <div class="submitted">On February 6th, 2009 keith says:</div>
+    <div class="content"><p>Thanks for that.</p>
+<p>Yes, we know we have a security problem: I have been removing inappropriate &quot;wow&quot; related junk since around Christmas 2008, and blocking the accounts used to create it; (&quot;wow_account&quot; has been blocked for several days).  Unfortunately, SourceForge have blocked the communications channels required to establish user bona-fides, when an account is created; thus we are forced to either:--</p>
+<ul>
+<li>Allow any user to create an account, and immediately create or modify wiki content, without additional validation; (this is the current configuration).</li>
+<li> Allow any user to create an account, but require them to submit all proposed postings for approval, until such time as they have demonstrated trustworthiness.</li>
+</ul>
+<p>If the wiki abuse continues, we may have to adopt the latter policy; however, while the spam remains manageable, we prefer not to do so, as this would not be in the wiki spirit of publicly co-operative site maintenance.</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+</div><a id="comment-177"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-177" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  </div>
+    <div class="submitted">On January 26th, 2009 dykshoorn says:</div>
+    <div class="content"><p>Thanks for writing this up.  I'm pretty green yet in regards to msys, mingw, makefiles, etc and built bash on my 1st attempt.</p>
+<p>Now if only I could find some info on config.guess supporting MSYS_NT-6.0 (ie server 2008) to build libglade... hmmm.</p>
+<p>Thanks again!</p>
+<p>Dave</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+<div class="indented"><a id="comment-224"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-224" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  </div>
+    <div class="submitted">On March 21st, 2009 mingw_msys_dan says:</div>
+    <div class="content"><p>I don't know if this will help you, but you might get some hints by comparing the config.guess files between an MSYS package and the &quot;standard&quot; Gnu version. Try MSYS Bash and standard Gnu Bash for instance.</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+</div><a id="comment-124"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-124" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  </div>
+    <div class="submitted">On October 23rd, 2008 habdank says:</div>
+    <div class="content"><p>Hi,</p>
+<p>The links to flex, bison and bash are broken.</p>
+<p>Regards,</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+<div class="indented"><a id="comment-125"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-125" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  <img src="http://www.mingw.org/sites/www.mingw.org/files/pictures/picture-7.png" alt="keith&#039;s picture" title="keith&#039;s picture"  /></div>
+    <div class="submitted">On October 23rd, 2008 keith says:</div>
+    <div class="content"><p>I don't think they were intended to be links; the MediaWiki filter apparently misidentified them.  I've adjusted the formatting, based on this assumption.</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+<div class="indented"><a id="comment-127"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-127" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  </div>
+    <div class="submitted">On October 28th, 2008 mingw_msys_dan says:</div>
+    <div class="content"><p>Yes, they were not intended to be links and I didn't know how to fix thm. I think some kind soul has done so for me. Thanks to that person!</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+</div></div><a id="comment-118"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-118" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  </div>
+    <div class="submitted">On October 20th, 2008 antigraviti says:</div>
+    <div class="content"><p>I tried running flex soon after installing flex and bison. It gave me an error message saying &quot;The application has failed to start because msys-regex-0.dll was not found. Re-installing the application may fix this problem.&quot; I guess something more needs to be specified in the steps mentioned here.<br />
+Installing regex 0.12 resolves the issue. I have modified the steps to include this package.</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+<a id="comment-117"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-117" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  <img src="http://www.mingw.org/sites/www.mingw.org/files/pictures/picture-7.png" alt="keith&#039;s picture" title="keith&#039;s picture"  /></div>
+    <div class="submitted">On October 20th, 2008 keith says:</div>
+    <div class="content"><p>Quote:</p>
+<pre>For some strange reason,
+the MSYS build environment doesn't like building in the same folder
+as the source code (did I read this correctly???)</pre></p>
+<p>It's actually dependent on the source package you are building; some will allow building in the source directory, some will not.  IIRC, GCC itself will not even permit building in any subdirectory of the source tree.</p>
+<p>However, why do you consider this strange?  It is, in fact, good practice to <em><strong>always</strong></em> build in a different directory from the source; any package which does not support such building, (commonly known as `VPATH' or `out-of-source' building), is deficient, IMO.</p>
+<p>Directing you to build in a separate directory is merely encouraging good practice.</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+<div class="indented"><a id="comment-126"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-126" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  </div>
+    <div class="submitted">On October 28th, 2008 mingw_msys_dan says:</div>
+    <div class="content"><p>I thought it was strange compared to the many, many Linux packages that I have &quot;built&quot; following the standard &quot;tar, configure, make&quot; routine.</p>
+<p>I think I was being a bit imprecise here; by &quot;built&quot; I meant run &quot;configure&quot; and &quot;make&quot;. I don't ever recall having to create a subdirectory of the untar'd package in order to run configure from.</p>
+<p>In particular, I have built bash on Linux and didn't need to create a subdirectory to run configure and make in. Hence, it seemed strange to find that for MSYS it was suggested to do so. Or, have I've completely mis-read something and that's not what it meant at all?</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+<div class="indented"><a id="comment-165"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-165" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  <img src="http://www.mingw.org/sites/www.mingw.org/files/pictures/picture-7.png" alt="keith&#039;s picture" title="keith&#039;s picture"  /></div>
+    <div class="submitted">On January 14th, 2009 keith says:</div>
+    <div class="content"><p>Sorry for the delay -- I missed this follow up, when you posted it.</p>
+<p>I think it strange that you even consider building &quot;in-source&quot;; there are so many advantages to keeping the build and source directories separate, that I just use this technique as a matter of course.  Sure, there are many packages which will support building either way, and it is a matter of personal preference which you choose; there are, however, some packages which simply cannot be built &quot;in-source&quot;, under any circumstances, while there are others, (broken, IMO), which can only be built &quot;in-source&quot;.</p>
+<p>As to why some packages can be built &quot;in-source&quot; on GNU/Linux, but require &quot;out-of-source&quot; building on MS-Windows, there can be any number of reasons for this.  One, which immediately comes to mind, is make-goal conflicts introduced by the case insensitive nature of the MS-Windows file system; autoconf is one package which exhibits such a conflict, requiring an &quot;out-of-source&quot; build on MS-Windows, where GNU/Linux can happily support building either in or out-of source.</p>
+<p>A further point: you say &quot;I don't recall ever having to create a subdirectory of the untarred package...&quot;.  You should not do this anyway; it is better to create the build directory as a <em><strong>sibling</strong></em> of the top level source directory, <em><strong>not</strong></em> as a <em><strong>descendant</strong></em> of it.  (In fact, if you ever try to build GCC &quot;in-source&quot;, or in <em><strong>any</strong></em> descendant of the top level source directory, then your build <em><strong>will</strong></em> fail <em><strong>miserably</strong></em>, on <em><strong>any platform</strong></em>).</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+<div class="indented"><a id="comment-223"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-223" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  </div>
+    <div class="submitted">On March 21st, 2009 mingw_msys_dan says:</div>
+    <div class="content"><p>I also missed your posting.</p>
+<p>Whilst a long-time user of Linux, I'm relatively new to building applications on Linux, so naturally I tend to follow the build and installation instructions supplied with the tar.gz packages. I'd be first to admit my memory isn't perfect, but as far as I remember, almost all of them imply that you should build &quot;in-source&quot;, which is why I thought it strange to create a separate build directory.</p>
+<p>Here are a couple of examples:</p>
+<p>--------------------------Python 2.6.1--------------------------</p>
+<p>To start building right away (on UNIX): type &quot;./configure&quot; in the<br />
+current directory and when it finishes, type &quot;make&quot;.  This creates an<br />
+executable &quot;./python&quot;; to install in /usr/local, first do &quot;su root&quot;<br />
+and then &quot;make install&quot;.</p>
+<hr />
+<br />
+--------------------------Bash <a href="http://4.0.rc1--------------------------">4.0.rc1--------------------------</a>Basic Installation</p>
+<h6 id="toc0">======</h6>
+<p>These are installation instructions for Bash.</p>
+<p>The simplest way to compile Bash is:</p>
+<pre>  1. `cd' to the directory containing the source code and type
+     `./configure' to configure Bash for your system.  If you're using
+     `csh' on an old version of System V, you might need to type `sh
+     ./configure' instead to prevent `csh' from trying to execute
+     `configure' itself.
+
+     Running `configure' takes some time.  While running, it prints
+     messages telling which features it is checking for.
+
+  2. Type `make' to compile Bash and build the `bashbug' bug reporting
+     script.</pre><p></p>
+<hr />
+<p>It's these types of instructions that made me regard building &quot;in-source&quot; to be &quot;standard&quot;. Should these instructions be considered as being in need of improvement?</p>
+<p>I do, however, accept your point that it is good practise to keep the source tree clean, so I do try to do so when possible.</p>
+<p>Regarding your comment regarding the sibling directory, I was referring to the my_build directory in the following:</p>
+<p>/home/&lt;user_name&gt;/bash-3.1-MSYS-1.0.11-1/my_build</p>
+<p>and when I said &quot;subdirectory&quot;, I meant a descendant of /home/&lt;user_name&gt;/bash-3.1-MSYS-1.0.11-1 - the &quot;top level package directory&quot;. Did you mean that it should be a sibling of</p>
+<p>/home/&lt;user_name&gt;/bash-3.1-MSYS-1.0.11-1</p>
+<p>?? If I understand correctly what you mean by &quot;top level source directory&quot;, /home/&lt;user_name&gt;/bash-3.1-MSYS-1.0.11-1/my_build is a sibling of it, and /home/&lt;user_name&gt;/bash-3.1-MSYS-1.0.11-1 is what I call the &quot;top level package directory&quot; that contains the &quot;top level source directory&quot;. Or is your &quot;top level source directory&quot; what I refer to as the &quot;top level package directory&quot;?</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+<div class="indented"><a id="comment-229"></a>
+<div class="comment">
+<h3 class="title"><a href="/wiki/HOWTO_Create_an_MSYS_Build_Environment#comment-229" class="active">Re: HOWTO Create an MSYS Build Environment</a></h3>
+<div class="picture">
+  <img src="http://www.mingw.org/sites/www.mingw.org/files/pictures/picture-7.png" alt="keith&#039;s picture" title="keith&#039;s picture"  /></div>
+    <div class="submitted">On March 23rd, 2009 keith says:</div>
+    <div class="content"><p>Saying that you <em>may</em> build in-source doesn't necessarily imply that you <em>should</em>, but yes, those packages which suggest this practice do their users a disservice, IMO; the advantages of an out-of-source build are much too significant, to be dismissed in such cavalier fashion.  I consider any package which cannot be built out-of-source to be broken.</p>
+<p>Conversely, there are some packages which simply <em><strong>cannot</strong></em> be built in-source.  GCC is one such; try it, and it will fail spectacularly.  Even trying to build it at any subdirectory level <em>within</em> its source tree will result in guaranteed failure.</p>
+<p>By <em>sibling</em>, I mean a directory with the same <em>parent</em> as the top level directory in the individual package's source tree.  I typically set it up like this:</p>
+<pre>all-package-sources
+   :
+   :-- foo-package
+   :
+   :-- build
+   :     :
+   :     :-- foo-package
+   :     :</pre><p>(where &quot;build&quot; is a sibling of &quot;foo-package&quot;, and therefore, &quot;build/foo-package&quot; is a nephew), and then do:</p>
+<pre>$ cd all-package-sources/build/foo-package
+$ ../../foo-package/configure ...</pre><p>but it doesn't need to be that immediate; you could even have the source tree on a read-only file system, and should still be able to build, with the build tree on a completely different file system device.</p>
+</div>
+    <div class="links"><ul class="links"><li class="comment_forbidden first last"></li>
+</ul></div>
+</div>
+</div></div></div></div></div>
+        <div id="content-bottom"><div class="block block-block" id="block-block-8">
+  <div class="blockinner">
+
+    <h2 class="title"> Site Status </h2>
+    <div class="content">
+      <p>Site maintenance completed May 25th, 2012 at 12:38 UTC</p>
+    </div>
+    
+  </div>
+</div>
+</div>      </div>
+      </div>
+      
+              <div id="sidebar-left" class="sidebar">
+          <form action="/wiki/HOWTO_Create_an_MSYS_Build_Environment"  accept-charset="UTF-8" method="post" id="search-theme-form">
+<div><div id="search" class="container-inline">
+  <div class="form-item" id="edit-search-theme-form-1-wrapper">
+ <label for="edit-search-theme-form-1">Search this site: </label>
+ <input type="text" maxlength="128" name="search_theme_form" id="edit-search-theme-form-1" size="15" value="" title="Enter the terms you wish to search for." class="form-text" />
+</div>
+<input type="submit" name="op" id="edit-submit" value="Search"  class="form-submit" />
+<input type="hidden" name="form_build_id" id="form-7b97dbca541d179c55ba17a0c7f8f3a8" value="form-7b97dbca541d179c55ba17a0c7f8f3a8"  />
+<input type="hidden" name="form_id" id="edit-search-theme-form" value="search_theme_form"  />
+</div>
+
+</div></form>
+          <div class="block block-block" id="block-block-2">
+  <div class="blockinner">
+
+    <h2 class="title"> Administrative Update </h2>
+    <div class="content">
+      <p>As of June 2013 we are accepting donations.  Please see the <a href="http://mingw.org/donate">Donate</a> page for more information on how to Donate.</p>
+    </div>
+    
+  </div>
+</div>
+<div class="block block-user" id="block-user-0">
+  <div class="blockinner">
+
+    <h2 class="title"> User login </h2>
+    <div class="content">
+      <a href="/user/login?destination=node%2F43">Login/Register</a>    </div>
+    
+  </div>
+</div>
+<div class="block block-user" id="block-user-1">
+  <div class="blockinner">
+
+    <h2 class="title"> Navigation </h2>
+    <div class="content">
+      <ul class="menu"><li class="expanded first"><a href="/Welcome_to_MinGW_org" title="About MinGW">About</a><ul class="menu"><li class="leaf first"><a href="/contact">Contact</a></li>
+<li class="leaf"><a href="/donate" title="Donate to MinGW.org">Donate</a></li>
+<li class="leaf"><a href="/history" title="History">History</a></li>
+<li class="leaf"><a href="/license" title="Licensing Terms">Licensing Terms</a></li>
+<li class="leaf"><a href="/lists.shtml" title="Mailing Lists">Mailing Lists</a></li>
+<li class="leaf"><a href="/privacy" title="Privacy">Privacy</a></li>
+<li class="leaf"><a href="/Reporting_Bugs" title="Reporting Bugs">Reporting Bugs</a></li>
+<li class="leaf"><a href="/wiki/SubmitPatches" title="How to submit patches">Submit Patches</a></li>
+<li class="leaf last"><a href="http://www.mingw.org/sitemap.xml" title="Sitemap">Sitemap</a></li>
+</ul></li>
+<li class="leaf"><a href="https://sourceforge.net/downloads/mingw" title="">Downloads</a></li>
+<li class="collapsed"><a href="/wiki" title="MinGW&#039;s New Wiki">Documentation</a></li>
+<li class="leaf"><a href="/tracker">Recent posts</a></li>
+<li class="collapsed last"><a href="/aggregator">Feed aggregator</a></li>
+</ul>    </div>
+    
+  </div>
+</div>
+<div class="block block-user" id="block-user-3">
+  <div class="blockinner">
+
+    <h2 class="title"> Who's online </h2>
+    <div class="content">
+      There are currently <em>0 users</em> and <em>43 guests</em> online.    </div>
+    
+  </div>
+</div>
+<div class="block block-statistics" id="block-statistics-0">
+  <div class="blockinner">
+
+    <h2 class="title"> Popular content </h2>
+    <div class="content">
+      <div class="item-list"><h3>Today's:</h3><ul><li class="first"><a href="/download/installer">download/installer</a></li>
+<li><a href="/wiki/Getting_Started">Getting Started</a></li>
+<li><a href="/wiki/InstallationHOWTOforMinGW">HOWTO Install the MinGW (GCC) Compiler Suite</a></li>
+<li><a href="/wiki/MSYS">MSYS</a></li>
+<li><a href="/wiki/MinGW_for_First_Time_Users_HOWTO">MinGW for First Time Users HOWTO</a></li>
+<li><a href="/story/File_list_on_SourceForge">File list on SourceForge</a></li>
+<li class="last"><a href="/wiki">MinGWiki</a></li>
+</ul></div><br /><div class="item-list"><h3>All time:</h3><ul><li class="first"><a href="/download/installer">download/installer</a></li>
+<li><a href="/wiki/InstallationHOWTOforMinGW">HOWTO Install the MinGW (GCC) Compiler Suite</a></li>
+<li class="last"><a href="/wiki/Getting_Started">Getting Started</a></li>
+</ul></div><br /><div class="item-list"><h3>Last viewed:</h3><ul><li class="first"><a href="/download/installer">download/installer</a></li>
+<li><a href="/wiki/InstallationHOWTOforMinGW">HOWTO Install the MinGW (GCC) Compiler Suite</a></li>
+<li class="last"><a href="/wiki/IncludePathHOWTO">HOWTO Specify the Header File Include Path for use with MinGW Compilers</a></li>
+</ul></div>    </div>
+    
+  </div>
+</div>
+<div class="block block-comment" id="block-comment-0">
+  <div class="blockinner">
+
+    <h2 class="title"> Recent comments </h2>
+    <div class="content">
+      <div class="item-list"><ul><li class="first"><a href="/story/File_list_on_SourceForge#comment-897">Re: File list on SourceForge</a><br />5 years 5 weeks ago</li>
+<li><a href="/wiki/Getting_Started#comment-896">Re: Getting Started</a><br />5 years 5 weeks ago</li>
+<li><a href="/story/File_list_on_SourceForge#comment-812">Re: File list on SourceForge</a><br />5 years 38 weeks ago</li>
+<li><a href="/story/File_list_on_SourceForge#comment-811">Re: File list on SourceForge</a><br />5 years 38 weeks ago</li>
+<li><a href="/story/File_list_on_SourceForge#comment-810">Re: File list on SourceForge</a><br />5 years 38 weeks ago</li>
+<li><a href="/story/File_list_on_SourceForge#comment-809">Re: File list on SourceForge</a><br />5 years 38 weeks ago</li>
+<li><a href="/story/File_list_on_SourceForge#comment-806">Re: File list on SourceForge</a><br />5 years 38 weeks ago</li>
+<li><a href="/story/File_list_on_SourceForge#comment-803">Re: File list on SourceForge</a><br />5 years 38 weeks ago</li>
+<li><a href="/wiki/Community_Supplied_Links#comment-801">Re: Community_Supplied_Links</a><br />5 years 39 weeks ago</li>
+<li class="last"><a href="/wiki/InstallationHOWTOforMinGW#comment-781">Re: HOWTO Install the MinGW (GCC) Compiler Suite</a><br />5 years 46 weeks ago</li>
+</ul></div>    </div>
+    
+  </div>
+</div>
+        </div>
+      
+              <div id="sidebar-right" class="sidebar">
+          <div class="block block-block" id="block-block-10">
+  <div class="blockinner">
+
+    
+    <div class="content">
+      <form action="/download/installer">
+<input type="submit" value="Download Installer" />
+</form>
+    </div>
+    
+  </div>
+</div>
+<div class="block block-block" id="block-block-6">
+  <div class="blockinner">
+
+    <h2 class="title"> Search mingw-users </h2>
+    <div class="content">
+         <form method="post" action="https://sourceforge.net/search?type_of_search=mlists&group_id=2435&forum_id=5119&search_body=1&search_subject=1&ml_name[]=mingw-users&posted_date_start=&posted_date_end=&form_submit=Search">
+   <p>
+   <span class="small">Choose Mail List:</span>
+   <select name="forum_id">
+     <option value="5119">MinGW-users</option>
+   </select>
+   </p><p>
+   <input type="hidden" name="type_of_search" value="mlists" />
+   <input type="hidden" name="group_id" value="2435" />
+   <input type="submit" name="Search" value="Search" />
+   </p>
+   </form>
+    </div>
+    
+  </div>
+</div>
+<div class="block block-block" id="block-block-4">
+  <div class="blockinner">
+
+    <h2 class="title"> Powered by </h2>
+    <div class="content">
+      <a href="http://sourceforge.net/projects/mingw" target="_sfpage"><img  src="http://sourceforge.net/sflogo.php?group_id=2435" width="88"  height="31" border="0" alt="SourceForge Logo" />  </a><br/><a href="http://www.networkredux.com"><img src="http://oldwiki.mingw.org/themes/default/images/NetworkRedux-140x31-3.png" /></a><br/><a href="http://drupal.org"><img src="http://www.mingw.org/misc/powered-blue-80x15.png" /></a><br/>
+</br/></br/></br/>    </div>
+    
+  </div>
+</div>
+<div class="block block-block" id="block-block-9">
+  <div class="blockinner">
+
+    <h2 class="title"> What Can You Do for MinGW? </h2>
+    <div class="content">
+      <p>There are various activities that require willing helpers who have a few minutes to spare each week.  Below is a list of a few of those things you can help us with.</p>
+<ul>
+<li><a href="/drupal_administration" rel="nofollow">Drupal Administration</a>
+</li>
+<li><a href="/Content_Administration" rel="nofollow">Content Administration</a>
+</li>
+<li><a href="/Wiki_Content_Updates" rel="nofollow">Wiki Content Updates</a>
+</li>
+<li><a href="/Ubuntu_Server_Administration" rel="nofollow">Ubuntu Server Administration</a>
+</li>
+<li><a href="/Software_Package_Contribution" rel="nofollow">Software Package Contributions</a>
+</li>
+<li><a href="/Runtime_Updates" rel="nofollow">Runtime Updates</a>
+</li>
+<li><a href="/Windows_API_Updates" rel="nofollow">Windows API Updates</a>
+</li>
+</ul>
+<p>This is not an exhaustive list there are plenty of other things we do.  If you would like to help let us know via the <a href="mailto:mingw-users@lists.sourceforge.net" rel="nofollow">mingw-users@lists.sourceforge.net</a> mail list.</p>
+    </div>
+    
+  </div>
+</div>
+        </div>
+      
+    </div>
+
+    <div id="footer">
+      Copyright &copy; 2016 - MinGW.org    </div>
+
+    
+        
+  </div>
+
+</body>
+</html>

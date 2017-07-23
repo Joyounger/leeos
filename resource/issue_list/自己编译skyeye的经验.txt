@@ -1,0 +1,44 @@
+skyeye_net_tuntap.c
+1  //#include "./skyeye_net_tap_win32.c"
+#if (defined(__MINGW32__) || defined(__CYGWIN__))
+#define SKYEYE_NET_TUNTAP_SUPPORT
+//#include "./skyeye_net_tap_win32.c"
+#endif /* defined(__MINGW32__) || defined(__CYGWIN__) */
+
+
+2  #ifndef SKYEYE_NET_TUNTAP_SUPPORT改为#ifdef SKYEYE_NET_TUNTAP_SUPPORT
+#ifdef SKYEYE_NET_TUNTAP_SUPPORT
+
+int
+tuntap_open (struct net_device *net_dev)
+{
+	return -1;
+}
+
+int
+tuntap_close (struct net_device *net_dev)
+{
+	return 0;
+}
+
+int
+tuntap_read (struct net_device *net_dev, void *buf, size_t count)
+{
+	return 0;
+}
+
+int
+tuntap_write (struct net_device *net_dev, void *buf, size_t count)
+{
+	return 0;
+}
+
+int
+tuntap_wait_packet (struct net_device *net_dev, struct timeval *tv)
+{
+	return -1;
+}
+
+#endif /* SKYEYE_NET_TUNTAP_SUPPORT */
+
+#endif

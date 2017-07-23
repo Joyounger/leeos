@@ -1,0 +1,87 @@
+http://qshanbao.blog.ustc.edu.cn/?p=211
+SKYEYE安装
+发表于2013 年 5 月 30 日由Qi Shanbao 
+skyeye是个很吸引人的软件，让你不用开发板也能学嵌入式，它能够仿真时下流行的arm处理器。可是不得不说软件本身很不完善，与各种操作系统都有这样那样的兼容问题，我在ubuntu12.10、ubuntu13.04、debian6.07、debian7.0上都手动安装过，但没有一次是顺利的，而官方已经说明对windows的支持更差。
+
+目前skyeye最新版本为1.3.5，各发行版linux软件库里一般是1.2.5版本，支持的cpu较少（仅支持到arm7），而1.3.5版本支持arm11，需手动安装，默认安装位置/opt/skyeye/。不过1.2.5版本可直接使用命令sudo aptitude install skyeye安装，文件位置分散，一般可运行不会出问题，但有时会出现错误：
+
+SKYEYE:Error in mem_read_word, no bank found, NumInstrs 0, mem_read_word addr = 0 no bank
+
+这是由于内存配置错误造成的，需要修改skyeye.conf文件，使之与程序中使用的硬件一致。
+
+skyeye1.3.5的安装过程：
+
+下载skyeye1.3.5，然后解压，进入解压后目录，执行命令：
+
+./configure
+
+sudo make lib
+
+sudo make install
+
+sudo make install_lib
+
+其间会出现很多错误，一般是找不到文件，把错误粘到google上查找解决方法。
+
+(1)cannot find -lltdl         解决方法：安装libltdl
+
+(2)X11/Xlib.h: No such file or directory     解决方法：安装xorg-dev
+
+(3)/usr/bin/ld: cannot find -liconv      解决方法：下载libiconv安装包，使用 ./configure –prefix=/usr/local ， make ， make install安装。 make可能出现错误： ./stdio.h:1010:1: error: ‘gets’ undeclared here (not in a function)  解决方法：sed -i ‘/gets is a security hole/d’ scrlib/stdio.h
+
+(4)fatal error: gtk/gtk.h: No such file or directory 解决方法：sudo apt-get install libgtk2.0-dev
+
+(5)fatal error: glibconfig.h: No such file or directory  解决方法：sudo cp /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h /usr/include/ （64位系统）
+
+(6)fatal error: cairo.h: No such file or directory  解决方法：cp /usr/include/cairo/* /usr/include/
+
+(7)fatal error: pango/pango.h: No such file or directory 解决方法：cp -r /usr/include/pango-1.0/pango/ /usr/include/
+
+(8)fatal error: gdkconfig.h: No such file or directory  解决方法：cp /usr/lib/x86_64-linux-gnu/gtk-2.0/include/gdkconfig.h /usr/include/   （64位系统）
+(9)fatal error: gdk-pixbuf/gdk-pixbuf.h: No such file or directory compilation terminated. 解决方法：sudo cp -r /usr/include/gdk-pixbuf-2.0/gdk-pixbuf /usr/include/
+
+(10)fatal error: atk/atk.h: No such file or directory  解决方法：cp -r /usr/include/atk-1.0/atk/ /usr/include/
+(11)fatal error: Python.h: No such file or directory  解决方法：sudo aptitude install python-dev
+
+(12)安装以后运行skyeye出错：ImportError: /usr/lib/python2.7/lib-dynload/_ctypes.x86_64-linux-gnu.so: undefined symbol: PyFloat_Type
+
+ImportError: /usr/local/lib/python2.7/lib-dynload/_ctypes.so undefined symbol: PyUnicodeUCS2_FromUnicode
+
+解决方法：下载python2.7解压，使用以下命令安装：
+
+./configure –enable-shared –enable-unicode=ucs4
+
+
+sudo make
+
+sudo make install
+
+ubuntu13.04经过以上曲折的过程可以成功使用测试。
+
+这里列出一个非常有用的网站，那里集中了使用linux产生的大部分错误并给处可靠的解决方法：Error messages and their solutions，我在debian下安装skyeye遇到的很多错误都在这里找到了解决方法。另外把skyeye路径添加进PATH可方便执行。
+
+debian下skyeye启动时可能出现下面的错误：
+
+……
+
+File “/usr/local/lib/python2.7/sre_constants.py”, line 18, in <module>
+from _sre import MAXREPEAT
+ImportError: cannot import name MAXREPEAT
+
+还是python的问题，网上很难找到有效的解决方法，有个人说只要sudo aptitude update，sudo aptitude upgrade一下就可以了，事实上却是如此，不知道什么原因。
+
+此处给出找到的另一种解决方法，未经验证：
+
+新建文件：  vim /etc/ld.so.conf.d/python2.7.conf
+加入内容：
+/usr/local/lib
+保存退出后运行：
+ldconfig        再次执行 python，问题即可解决。
+
+唉，每次装skyeye都要半天，虽然是优秀的软件，但安装过程如此困难，实在影响自身发展，我想这也是skyeye用户这么少的一个原因吧。（debian下无法正常调试，已卸载）
+
+网友的debian 7_amd64_kde下安装skyeye1.3.5过程。
+
+不管怎样，又一次安装成功了，明天开始，学习下skyeye的用法吧。
+
+此条目发表在开启ARM-Linux之旅分类目录。将固定链接加入收藏夹。 

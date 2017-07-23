@@ -1,0 +1,23 @@
+MinGW安装mintty终端
+Posted on 2012 年 12 月 7 日	  1040 Views
+msys的cmd界面太难看了，而且不能用鼠标直接选择文本复制，可以安装mintty这个虚拟终端。
+
+
+mingw-get install mintty
+1
+mingw-get install mintty
+ 
+
+然后在MinGW-Shell的启动选项里加入 –mintty
+C:\MinGW\msys\1.0\msys.bat -mintty
+MinGW安装mintty
+
+ 
+
+然后打开的效果:
+
+Mingw安装mintty
+
+ 
+
+然后在终端内右键,Option，可以设置显示效果，窗口大小，编码等。

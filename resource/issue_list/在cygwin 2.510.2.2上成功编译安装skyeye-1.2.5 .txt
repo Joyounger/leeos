@@ -1,0 +1,75 @@
+因为想用eclipse学习skyeye代码，而我的本本太慢了，无法想象在VMWare跑eclipse会是什么样子。
+所以决定重新在cygwin上装一个skyeye.
+
+环境：
+OS: XP SP3
+skyeye: 1.2.5
+cygwin: 2.510.2.2
+gcc:3.4.4
+
+1)编译
+./configure
+./make
+
+但是编译到下面这一行时编译就出错了."storage size of 'tv' isn't known"
+arch\ppc\common\ppc_arch_interface.c:139
+          struct timeval tv;
+
+在ppc_arch_interface.c加上一行头文件定义,就OK了。
+#include <sys/_timeval.h>
+
+2)测试
+下面做个简单的测试，进入skyeye-testsuite的下面的目录
+
+cd C:\Downloads\skyeye-testsuite-1.2.5\linux\s3c2410\s3c2410x-2.6.14
+skyeye.exe -e vmlinux
+
+arch: arm
+cpu info: armv4, arm920t, 41009200, ff00fff0, 2
+mach info: name s3c2410x, mach_init addr 0x423dc0
+[TAP-WIN32]: Error enumerating registry subkeys of key: SYSTEM\CurrentControlSet\Control\Network\{4D36E972-E325-11CE-BFC1-08002BE10318}
+[TAP-WIN32]: ERROR: SkyEye requires a TAP-Win32 driver that is at least version 7.1
+Please install from http://prdownloads.sourceforge.net/openvpn/openvpn-2.0_beta2-install.exe
+failed to setup_module (name:net, type:cs8900a)
+SKYEYE: use arm920t mmu ops
+arch: arm
+cpu info: armv4, arm920t, 41009200, ff00fff0, 2
+mach info: name s3c2410x, mach_init addr 0x423dc0
+SKYEYE: use arm920t mmu ops
+
+**************************** WARNING **********************************
+If you want to run ELF image, you should use -e option to indicate
+your elf-format image filename. Or you only want to run binary image,
+you need to set the filename of the image and its entry in skyeye.conf.
+***********************************************************************
+
+Non-option argument -e
+Non-option argument vmlinux
+Your elf file is little endian.
+uart_mod:0, desc_in:, desc_out:, converter:
+Loaded RAM   ./initrd.img
+SKYEYE:Error in mem_read_word, no bank found, NumInstrs 6291454, mem_read_word addr = 0 no bank
+SKYEYE:Error in mem_read_word, no bank found, NumInstrs 6291454, mem_read_word addr = 4 no bank
+SKYEYE:Error in mem_read_word, no bank found, NumInstrs 6291454, mem_read_word addr = 8 no bank
+
+出错了！不要紧，看来是缺少网络驱动tuntap,先将其去掉,在配置文件skyeye.conf中将下面一行注掉.
+#net: type=cs8900a, base=0x19000300, size=0x20,int=9, mac=0:4:3:2:1:f, ethmod=tuntap, hostip=10.0.0.1
+
+现在再来一遍.前面[TAP-WIN32]的错误没有了,但后面的错误还在.原因应该是没有加载vmlinux.
+从现象是和源代码分析，应该是getopt()解析参数有问题。为什么会出问题，开始我怀疑是因为没有定义__CYGWIN__宏。从下面的代码看，cygwin上引用的头文件是不一样的。
+skyeye.c:
+#ifdef __CYGWIN__
+#include 
+#else
+#include 
+#endif
+
+于是我在所有Makefile文件中的DEF宏里都加上-D__CYGWIN__.然后重新编译.结果还是老样子.于是继续找原因.费了很大的力气,最后终于搞清楚了.
+getopt()函数使用的一个全局变量optarg和libiberty.a库中的一个变量重名。导致getopt()函数执行后optarg没有被正确赋值。
+知道原因了，解决起来也很容易。连接生成skyeye.exe时把libc.a和libiberty.a的顺序调一下，让libc.a放到前面就OK了。具体就是修改一下skyeye根目录下的Makefile文件.
+修改前：
+LIBS = -lbfd -lws2_32 -lwinmm -luser32 -lm -lkernel32 -lintl -liberty -lgdi32 -lc -ladvapi32
+修改后：
+LIBS = -lbfd -lws2_32 -lwinmm -luser32 -lm -lkernel32 -lintl -lc -liberty -lgdi32 -ladvapi32
+
+现在再跑s3c2410x-2.6.14的测试，哈哈！终于成功了！

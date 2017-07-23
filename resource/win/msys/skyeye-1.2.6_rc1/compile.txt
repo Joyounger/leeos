@@ -1,0 +1,3 @@
+ÐÞ¸Ämakefile£º
+	$(top_srcdir)/arch/coldfire/libcoldfire.a -lc \¸ÄÎª£º
+	$(top_srcdir)/arch/coldfire/libcoldfire.a \

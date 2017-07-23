@@ -1,0 +1,39 @@
+root@ASUSN43SL ~/myos/6.1_buddy
+# skyeye.exe -help
+SkyEye 1.2.6
+Bug report: skyeye-developer@lists.gro.clinux.org
+Usage: skyeye [options] -e program [program args]
+Default mode is STANDALONE mode
+------------------------------------------------------------------
+Options:
+-e exec-file        the (ELF executable format)kernel file name.
+-l load_address,load_address_mask
+                    Load ELF file to another address, not its entry.
+-b                  specify the data type is big endian when non "-e" option.
+-d                  in GDB Server mode (can be connected by GDB).
+-c config-file      the skyeye configure file name.
+-h                  The SkyEye command options, and ARCHs and CPUs simulated.
+------------------------------------------------------------------
+----------- Architectures and CPUs simulated by SkyEye-------------
+-------- ARM architectures ---------
+at91
+lpc
+s3c4510b
+s3c44b0x
+s3c44b0
+s3c3410x
+ep7312
+lh79520
+ep9312
+cs89712
+sa1100
+pxa_lubbock
+pxa_mainstone
+at91rm92
+s3c2410x
+s3c2440
+sharp_lh7a400
+ns9750
+-------- BlackFin architectures ----
+bf533
+bf537

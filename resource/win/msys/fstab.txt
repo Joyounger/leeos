@@ -1,0 +1,4 @@
+When you install MinGW I suggest you install it to C:/mingw
+(replace C: with the drive of your choice).  Then create an
+/etc/fstab file with a line that has a value similar to:
+C:/mingw /mingw
